@@ -15,7 +15,7 @@
 # CWB fork: current upstream requires Node >= 22.12, so the base image moves from Node 20 to 22.
 ARG NODE_IMAGE=docker.io/library/node:22-alpine
 # CWB fork: build wacrm from the phsycomonkey/wacrm fork (branch feat/inbox-contact-panel).
-ARG WACRM_COMMIT=a429883070e84bf7614ddcec983ab91506c40ea8
+ARG WACRM_COMMIT=904d103962a34e6c86b9e01d594522d996f6350d
 
 # ---------------------------------------------------------------------------------------------
 # Upstream source at an exact commit. Fetching by commit id makes git verify the content.
