@@ -12,8 +12,10 @@
 # One upstream file is patched, and the build fails if the patch stops applying: the signup page
 # also sends the invitation token it already holds, as user metadata, so that the database can admit
 # invited people while refusing everyone else. See images/app/gate.sql.
-ARG NODE_IMAGE=docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
-ARG WACRM_COMMIT=80c3f9a1aecdaf21b98311f230fdaaaec7d85f7d
+# CWB fork: current upstream requires Node >= 22.12, so the base image moves from Node 20 to 22.
+ARG NODE_IMAGE=docker.io/library/node:22-alpine
+# CWB fork: build wacrm from the phsycomonkey/wacrm fork (branch feat/inbox-contact-panel).
+ARG WACRM_COMMIT=4ec6199e5c328f7edb1e28ab30bf6afada2f0f13
 
 # ---------------------------------------------------------------------------------------------
 # Upstream source at an exact commit. Fetching by commit id makes git verify the content.
@@ -22,7 +24,7 @@ FROM ${NODE_IMAGE} AS source
 ARG WACRM_COMMIT
 RUN apk add --no-cache git \
     && git init -q /src \
-    && git -C /src fetch -q --depth 1 https://github.com/ArnasDon/wacrm.git "${WACRM_COMMIT}" \
+    && git -C /src fetch -q --depth 1 https://github.com/phsycomonkey/wacrm.git "${WACRM_COMMIT}" \
     && git -C /src checkout -q FETCH_HEAD \
     && test "$(git -C /src rev-parse HEAD)" = "${WACRM_COMMIT}" \
     && rm -rf /src/.git
